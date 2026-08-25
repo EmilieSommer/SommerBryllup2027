@@ -14,10 +14,11 @@ const registrationDialog = document.querySelector("#registration-dialog");
 const registrationClose = document.querySelector("#registration-close");
 const registrationForm = document.querySelector("#registration-form");
 const attendanceDetails = document.querySelector("#attendance-details");
-const attendanceRadios = [...document.querySelectorAll('input[name="attendance"]')];
+const attendanceRadios = [...document.querySelectorAll('input[name="Deltagelse"]')];
 const flavourCheckboxes = [...document.querySelectorAll('input[name="flavours"]')];
 const flavourCount = document.querySelector("#flavour-count");
 const registrationConfirmation = document.querySelector("#registration-confirmation");
+const registrationSubmit = registrationForm.querySelector('[type="submit"]');
 let musicStarted = false;
 let musicTarget = 0;
 let musicFadeFrame;
@@ -60,7 +61,7 @@ window.addEventListener("keydown", startBackgroundMusic, { once: true });
 registrationButton.addEventListener("click", () => registrationDialog.showModal());
 registrationClose.addEventListener("click", () => registrationDialog.close());
 function updateAttendanceDetails() {
-  const attending = document.querySelector('input[name="attendance"]:checked')?.value === "ja";
+  const attending = document.querySelector('input[name="Deltagelse"]:checked')?.value === "Ja";
   attendanceDetails.classList.toggle("is-visible", attending);
   attendanceDetails.setAttribute("aria-hidden", String(!attending));
   attendanceDetails.querySelectorAll("input, textarea").forEach((field) => { field.disabled = !attending; });
@@ -74,11 +75,31 @@ flavourCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", () =
   flavourCount.textContent = `(${selectedCount}/4)`;
   flavourCheckboxes.forEach((flavour) => { flavour.disabled = !flavour.checked && selectedCount >= 4; });
 }));
-registrationForm.addEventListener("submit", (event) => {
+registrationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  registrationForm.hidden = true;
-  registrationConfirmation.hidden = false;
-  registrationConfirmation.textContent = "Tak! Tilmeldingen er klar — vi mangler blot at tilkoble modtagelsen af svar.";
+  const attending = document.querySelector('input[name="Deltagelse"]:checked')?.value === "Ja";
+  registrationSubmit.disabled = true;
+  registrationSubmit.textContent = "Sender…";
+  registrationConfirmation.hidden = true;
+
+  try {
+    const response = await fetch(registrationForm.action, {
+      method: "POST",
+      body: new FormData(registrationForm),
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) throw new Error("Formspree submission failed");
+    registrationForm.hidden = true;
+    registrationConfirmation.hidden = false;
+    registrationConfirmation.textContent = attending
+      ? "Tak for jeres svar — vi glæder os til at fejre med jer."
+      : "Tak for jeres svar — vi er kede af, at I ikke kan være med.";
+  } catch (error) {
+    registrationConfirmation.hidden = false;
+    registrationConfirmation.textContent = "Åh nej — svaret kunne ikke sendes. Prøv gerne igen om lidt.";
+    registrationSubmit.disabled = false;
+    registrationSubmit.textContent = "Send tilmelding";
+  }
 });
 
 function updateScene() {
