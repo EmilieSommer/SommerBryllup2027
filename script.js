@@ -11,6 +11,13 @@ const birdSound = document.querySelector("#bird-sound");
 const scrollPrompt = document.querySelector(".scroll-prompt");
 const registrationButton = document.querySelector("#registration-button");
 const registrationDialog = document.querySelector("#registration-dialog");
+const registrationClose = document.querySelector("#registration-close");
+const registrationForm = document.querySelector("#registration-form");
+const attendanceDetails = document.querySelector("#attendance-details");
+const attendanceRadios = [...document.querySelectorAll('input[name="attendance"]')];
+const flavourCheckboxes = [...document.querySelectorAll('input[name="flavours"]')];
+const flavourCount = document.querySelector("#flavour-count");
+const registrationConfirmation = document.querySelector("#registration-confirmation");
 let musicStarted = false;
 let musicTarget = 0;
 let musicFadeFrame;
@@ -48,6 +55,23 @@ function startBackgroundMusic() {
 window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
 window.addEventListener("keydown", startBackgroundMusic, { once: true });
 registrationButton.addEventListener("click", () => registrationDialog.showModal());
+registrationClose.addEventListener("click", () => registrationDialog.close());
+attendanceRadios.forEach((radio) => radio.addEventListener("change", () => {
+  const attending = document.querySelector('input[name="attendance"]:checked')?.value === "ja";
+  attendanceDetails.hidden = !attending;
+  attendanceDetails.querySelectorAll("input, textarea").forEach((field) => { field.disabled = !attending; });
+}));
+flavourCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", () => {
+  const selected = flavourCheckboxes.filter((flavour) => flavour.checked);
+  if (selected.length > 4) checkbox.checked = false;
+  flavourCount.textContent = `(${flavourCheckboxes.filter((flavour) => flavour.checked).length}/4)`;
+}));
+registrationForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  registrationForm.hidden = true;
+  registrationConfirmation.hidden = false;
+  registrationConfirmation.textContent = "Tak! Tilmeldingen er klar — vi mangler blot at tilkoble modtagelsen af svar.";
+});
 
 function updateScene() {
   // Keep the portrait illustration comfortably framed in both desktop browsers

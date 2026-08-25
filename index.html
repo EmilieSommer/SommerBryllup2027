@@ -51,11 +51,26 @@
     </main>
     <dialog class="registration-dialog" id="registration-dialog" aria-labelledby="registration-title">
       <section class="registration-card">
-        <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Luk tilmelding">×</button></form>
+        <button class="dialog-close" id="registration-close" type="button" aria-label="Luk tilmelding">×</button>
         <p class="modal-kicker">Emilie &amp; Marc · 10. juli 2027</p>
         <h2 id="registration-title">Tilmelding</h2>
-        <p>Vi glæder os til at fejre dagen med jer. Tilmeldingen åbner snart — gem datoen imens.</p>
-        <form method="dialog"><button class="modal-button" type="submit">Forstået</button></form>
+        <p class="registration-intro">Vi glæder os til at fejre dagen med jer.</p>
+        <form class="registration-form" id="registration-form">
+          <div class="registration-field"><label for="first-name">Navn</label><input id="first-name" name="first-name" type="text" autocomplete="given-name" required /></div>
+          <div class="registration-field"><label for="last-name">Efternavn</label><input id="last-name" name="last-name" type="text" autocomplete="family-name" required /></div>
+          <fieldset class="attendance-field"><legend>Kan du deltage til brylluppet?</legend><label><input type="radio" name="attendance" value="ja" required /> Ja</label><label><input type="radio" name="attendance" value="nej" /> Nej</label></fieldset>
+          <div class="attendance-details" id="attendance-details" hidden>
+            <div class="registration-field"><label for="song">Hvilken sang får dig altid på dansegulvet?</label><input id="song" name="song" type="text" /></div>
+            <fieldset class="flavour-field"><legend>Hvilken is kan du altid spise en ekstra kugle af?</legend><p class="field-hint">Vælg op til 4 smage <span id="flavour-count">(0/4)</span></p>
+              <div class="flavour-options">
+                <label><input type="checkbox" name="flavours" value="Vanilje" /> Vanilje</label><label><input type="checkbox" name="flavours" value="Chokolade" /> Chokolade</label><label><input type="checkbox" name="flavours" value="Jordbær" /> Jordbær</label><label><input type="checkbox" name="flavours" value="Saltkaramel" /> Saltkaramel</label><label><input type="checkbox" name="flavours" value="Pistacie" /> Pistacie</label><label><input type="checkbox" name="flavours" value="Stracciatella" /> Stracciatella</label><label><input type="checkbox" name="flavours" value="Citron" /> Citron</label><label><input type="checkbox" name="flavours" value="Mango" /> Mango</label><label><input type="checkbox" name="flavours" value="Hindbærsorbet" /> Hindbærsorbet</label><label><input type="checkbox" name="flavours" value="Lakrids" /> Lakrids</label>
+              </div>
+            </fieldset>
+            <div class="registration-field"><label for="allergens">Har du nogle allergener, vi skal være opmærksomme på?</label><textarea id="allergens" name="allergens" rows="3"></textarea></div>
+          </div>
+          <button class="modal-button" type="submit">Send tilmelding</button>
+        </form>
+        <p class="registration-confirmation" id="registration-confirmation" hidden></p>
       </section>
     </dialog>
     <audio id="background-music" loop preload="auto">
