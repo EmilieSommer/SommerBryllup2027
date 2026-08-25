@@ -6,7 +6,7 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 .scene { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--paper); isolation: isolate; }
 .world { --scale: 1; --camera: 0; position: absolute; top: 0; left: 50%; width: 1440px; height: 3538px; transform-origin: top center; transform: translateX(-50%) scale(var(--scale)) translateY(calc(var(--camera) * -1px)); }
 .layer { --float: 0px; position: absolute; top: calc(var(--y) * 1px); left: 0; display: block; width: 1440px; height: auto; max-width: none; transform: translate3d(0, var(--float), 0); will-change: transform; pointer-events: none; user-select: none; }
-.bird-flight { position: absolute; z-index: 25; opacity: 0; pointer-events: none; --duration: 4.6s; --delay: 0s; --travel-x: -1750px; --travel-y: -340px; }
+.bird-flight { position: absolute; opacity: 0; pointer-events: none; --duration: 4.6s; --delay: 0s; --travel-x: -1750px; --travel-y: -340px; }
 .bird-flight-template { display: none; }
 .bird-flight--hero { top: 900px; left: 1030px; width: 520px; height: 375px; --duration: 5s; --travel-y: -210px; }
 .bird-flight--middle { top: 620px; left: 1160px; width: 385px; height: 278px; --delay: .45s; --duration: 4.5s; --travel-x: -1680px; --travel-y: -105px; }

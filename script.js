@@ -3,7 +3,8 @@ const scene = document.querySelector(".scene");
 const world = document.querySelector(".world");
 const movingLayers = [...document.querySelectorAll("[data-depth]")];
 const birdFlightTemplates = [...document.querySelectorAll("[data-flight-template]")];
-const nearestBranch = world.querySelector('img[data-depth="2"]');
+// Spawn the birds behind layer 3 and all nearer foreground layers.
+const foregroundAnchor = world.querySelector('img[data-depth="3"]');
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const backgroundMusic = document.querySelector("#background-music");
 const birdSound = document.querySelector("#bird-sound");
@@ -68,7 +69,7 @@ function updateScene() {
       flight.classList.remove("bird-flight-template");
       flight.removeAttribute("data-flight-template");
       flight.classList.add("is-flying");
-      world.insertBefore(flight, nearestBranch);
+      world.insertBefore(flight, foregroundAnchor);
       flight.addEventListener("animationend", () => flight.remove(), { once: true });
     });
     // Each flock has one bird call; cloned audio lets earlier calls finish naturally.
