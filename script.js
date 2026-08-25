@@ -59,11 +59,14 @@ window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
 window.addEventListener("keydown", startBackgroundMusic, { once: true });
 registrationButton.addEventListener("click", () => registrationDialog.showModal());
 registrationClose.addEventListener("click", () => registrationDialog.close());
-attendanceRadios.forEach((radio) => radio.addEventListener("change", () => {
+function updateAttendanceDetails() {
   const attending = document.querySelector('input[name="attendance"]:checked')?.value === "ja";
-  attendanceDetails.hidden = !attending;
+  attendanceDetails.classList.toggle("is-visible", attending);
+  attendanceDetails.setAttribute("aria-hidden", String(!attending));
   attendanceDetails.querySelectorAll("input, textarea").forEach((field) => { field.disabled = !attending; });
-}));
+}
+attendanceRadios.forEach((radio) => radio.addEventListener("change", updateAttendanceDetails));
+updateAttendanceDetails();
 flavourCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", () => {
   const selected = flavourCheckboxes.filter((flavour) => flavour.checked);
   if (selected.length > 4) checkbox.checked = false;
