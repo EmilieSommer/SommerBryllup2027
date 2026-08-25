@@ -9,6 +9,8 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const backgroundMusic = document.querySelector("#background-music");
 const birdSound = document.querySelector("#bird-sound");
 const scrollPrompt = document.querySelector(".scroll-prompt");
+const registrationButton = document.querySelector("#registration-button");
+const registrationDialog = document.querySelector("#registration-dialog");
 let musicStarted = false;
 let musicTarget = 0;
 let musicFadeFrame;
@@ -45,6 +47,7 @@ function startBackgroundMusic() {
 // A tap/click unlocks audio on browsers that block sound during scroll gestures.
 window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
 window.addEventListener("keydown", startBackgroundMusic, { once: true });
+registrationButton.addEventListener("click", () => registrationDialog.showModal());
 
 function updateScene() {
   // Keep the portrait illustration comfortably framed in both desktop browsers

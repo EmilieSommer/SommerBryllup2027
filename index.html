@@ -10,7 +10,7 @@
   <body>
     <main class="parallax" id="parallax">
       <section class="scene" aria-labelledby="page-title">
-        <div class="world" id="world" aria-hidden="true">
+        <div class="world" id="world">
           <!-- Exact SVG positions. Layer 1 is closest; 11 is furthest away. -->
           <img class="layer" src="assets/layers-extended/11.png" alt="" data-depth="11" style="--y:0" />
           <img class="layer" src="assets/layers-extended/10.png" alt="" data-depth="10" style="--y:1668" />
@@ -42,10 +42,22 @@
           <h1 id="page-title" class="names">Emilie <span>&amp;</span> Marc</h1>
           <p class="save-date">Save the date</p>
           <img class="date-sprite" src="assets/10Juli.png" alt="10. juli 2027" data-depth="5" />
+          <button class="registration-stamp" id="registration-button" type="button" aria-haspopup="dialog" aria-controls="registration-dialog">
+            <img src="assets/registration-stamp.png" alt="Klik her for tilmelding" />
+          </button>
         </div>
         <p class="scroll-prompt" aria-hidden="true">Scroll ned</p>
       </section>
     </main>
+    <dialog class="registration-dialog" id="registration-dialog" aria-labelledby="registration-title">
+      <section class="registration-card">
+        <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Luk tilmelding">×</button></form>
+        <p class="modal-kicker">Emilie &amp; Marc · 10. juli 2027</p>
+        <h2 id="registration-title">Tilmelding</h2>
+        <p>Vi glæder os til at fejre dagen med jer. Tilmeldingen åbner snart — gem datoen imens.</p>
+        <form method="dialog"><button class="modal-button" type="submit">Forstået</button></form>
+      </section>
+    </dialog>
     <audio id="background-music" loop preload="auto">
       <source src="assets/audio/background.mp3" type="audio/mpeg" />
     </audio>
