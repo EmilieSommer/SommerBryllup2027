@@ -64,7 +64,9 @@ attendanceRadios.forEach((radio) => radio.addEventListener("change", () => {
 flavourCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", () => {
   const selected = flavourCheckboxes.filter((flavour) => flavour.checked);
   if (selected.length > 4) checkbox.checked = false;
-  flavourCount.textContent = `(${flavourCheckboxes.filter((flavour) => flavour.checked).length}/4)`;
+  const selectedCount = flavourCheckboxes.filter((flavour) => flavour.checked).length;
+  flavourCount.textContent = `(${selectedCount}/4)`;
+  flavourCheckboxes.forEach((flavour) => { flavour.disabled = !flavour.checked && selectedCount >= 4; });
 }));
 registrationForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -87,7 +89,7 @@ function updateScene() {
   const promptColor = startColor.map((channel, index) => Math.round(channel + (endColor[index] - channel) * progress));
   scrollPrompt.style.setProperty("--prompt-color", `rgb(${promptColor.join(", ")})`);
   startBackgroundMusic();
-  setMusicLevel(progress > 0.015 && progress < 0.88 ? 0.22 : 0);
+  setMusicLevel(progress > 0.015 ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
   if (progress >= 0.08 && !window.flockTriggered) {
