@@ -5,6 +5,37 @@ const movingLayers = [...document.querySelectorAll("[data-depth]")];
 const birdFlightTemplates = [...document.querySelectorAll("[data-flight-template]")];
 const nearestBranch = world.querySelector('img[data-depth="2"]');
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const backgroundMusic = document.querySelector("#background-music");
+const birdSound = document.querySelector("#bird-sound");
+let musicStarted = false;
+let musicTarget = 0;
+let musicFadeFrame;
+
+function fadeMusic() {
+  const difference = musicTarget - backgroundMusic.volume;
+  if (Math.abs(difference) < 0.003) {
+    backgroundMusic.volume = musicTarget;
+    musicFadeFrame = undefined;
+    return;
+  }
+  backgroundMusic.volume += difference * 0.09;
+  musicFadeFrame = requestAnimationFrame(fadeMusic);
+}
+
+function setMusicLevel(level) {
+  musicTarget = level;
+  if (!musicFadeFrame) musicFadeFrame = requestAnimationFrame(fadeMusic);
+}
+
+function startBackgroundMusic() {
+  if (musicStarted || reduceMotion.matches) return;
+  backgroundMusic.volume = 0;
+  backgroundMusic.play().then(() => { musicStarted = true; }).catch(() => {});
+}
+
+// A tap/click unlocks audio on browsers that block sound during scroll gestures.
+window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
+window.addEventListener("keydown", startBackgroundMusic, { once: true });
 
 function updateScene() {
   // Keep the portrait illustration comfortably framed in both desktop browsers
@@ -14,6 +45,8 @@ function updateScene() {
   if (reduceMotion.matches) return;
   const scrollRange = section.offsetHeight - window.innerHeight;
   const progress = Math.max(0, Math.min(1, -section.getBoundingClientRect().top / scrollRange));
+  startBackgroundMusic();
+  setMusicLevel(progress > 0.015 && progress < 0.88 ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
   if (progress >= 0.08 && !window.flockTriggered) {
@@ -25,6 +58,10 @@ function updateScene() {
       world.insertBefore(flight, nearestBranch);
       flight.addEventListener("animationend", () => flight.remove(), { once: true });
     });
+    // Each flock has one bird call; cloned audio lets earlier calls finish naturally.
+    const birdCall = birdSound.cloneNode(true);
+    birdCall.volume = 0.5;
+    birdCall.play().catch(() => {});
     window.flockTriggered = true;
   }
   if (progress < 0.05) window.flockTriggered = false;
