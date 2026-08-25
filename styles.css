@@ -21,7 +21,7 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 .names, .save-date { position: absolute; z-index: 20; left: 0; width: 1440px; margin: 0; color: var(--red); text-align: center; font-family: "Melodrame", cursive; font-weight: 400; text-shadow: 0 2px rgb(255 224 174 / 30%); }
 .names { top: 475px; font-size: 182px; line-height: .8; letter-spacing: -.05em; }.names span { font-size: .78em; }.save-date { top: 700px; font-size: 133px; line-height: .8; }
 .date-sprite { --float: 0px; position: absolute; z-index: 20; top: 1700px; left: 420px; width: 600px; height: auto; transform: translate3d(0, var(--float), 0); will-change: transform; }
-.scroll-prompt { position: absolute; z-index: 30; bottom: 1.25rem; left: 0; right: 0; margin: 0; color: #f8e0bc; text-align: center; text-transform: uppercase; font: 600 .62rem/1 Arial, sans-serif; letter-spacing: .25em; opacity: 0; transition: opacity .45s ease; }
-.scroll-prompt.is-visible { opacity: .9; }
+.scroll-prompt { position: absolute; z-index: 30; bottom: 1.25rem; left: 0; right: 0; margin: 0; color: var(--prompt-color, #4a2d27); text-align: center; text-transform: uppercase; font: 700 .66rem/1 Arial, sans-serif; letter-spacing: .25em; opacity: 0; text-shadow: 0 1px 2px rgb(255 240 212 / .35); transition: opacity .45s ease, color .25s ease; }
+.scroll-prompt.is-visible { opacity: .95; }
 @media (min-width: 700px) { .scene { max-width: 620px; margin: auto; box-shadow: 0 0 70px rgb(0 0 0 / .28); } }
 @media (prefers-reduced-motion: reduce) { .parallax { height: 100svh; } .world { transform: translateX(-50%) scale(var(--scale)); } .layer, .date-sprite { transform: none !important; } .bird-flight { display: none; } }

@@ -53,6 +53,11 @@ function updateScene() {
   if (reduceMotion.matches) return;
   const scrollRange = section.offsetHeight - window.innerHeight;
   const progress = Math.max(0, Math.min(1, -section.getBoundingClientRect().top / scrollRange));
+  // Dark type on the pale opening, gradually becoming cream over the dark landscape.
+  const startColor = [74, 45, 39];
+  const endColor = [255, 240, 212];
+  const promptColor = startColor.map((channel, index) => Math.round(channel + (endColor[index] - channel) * progress));
+  scrollPrompt.style.setProperty("--prompt-color", `rgb(${promptColor.join(", ")})`);
   startBackgroundMusic();
   setMusicLevel(progress > 0.015 && progress < 0.88 ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
