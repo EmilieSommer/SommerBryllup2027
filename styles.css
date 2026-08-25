@@ -83,7 +83,7 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 .registration-card { padding-top: 4rem; }
 .registration-card h2 { color: #b74338; font-family: Arial, sans-serif; font-size: clamp(1.65rem, 4vw, 2.1rem); font-style: normal; font-weight: 700; letter-spacing: .08em; line-height: 1; text-transform: uppercase; }
 .attendance-field { padding: .8rem 0; border: 0; }
-.attendance-field input, .flavour-options input { appearance: none; width: .92rem; height: .92rem; margin: 0; border: 1px solid #8f2f2b; border-radius: 50%; background: #a63b35; flex: 0 0 auto; }
-.attendance-field input:checked { background: radial-gradient(circle, #f2e4ca 0 32%, #a63b35 36%); }
+.attendance-field input, .flavour-options input { appearance: none; width: .92rem; height: .92rem; margin: 0; border: 1.5px solid #8f2f2b; border-radius: 50%; background: transparent; flex: 0 0 auto; }
+.attendance-field input:checked, .flavour-options input:checked { background-color: #a63b35; }
 .flavour-options input:checked { background-color: #a63b35; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2 4.7 9 10 3.2' fill='none' stroke='%23f6e7ca' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
 @media (max-width: 480px) { .registration-card { padding-top: 3.6rem; } }
