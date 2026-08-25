@@ -26,6 +26,9 @@ let promptTimer;
 function showScrollPromptAfterPause() {
   scrollPrompt.classList.remove("is-visible");
   clearTimeout(promptTimer);
+  const scrollRange = section.offsetHeight - window.innerHeight;
+  const progress = Math.max(0, Math.min(1, -section.getBoundingClientRect().top / scrollRange));
+  if (progress >= 0.86) return;
   promptTimer = setTimeout(() => scrollPrompt.classList.add("is-visible"), 1200);
 }
 
