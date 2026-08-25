@@ -54,10 +54,13 @@
         <button class="dialog-close" id="registration-close" type="button" aria-label="Luk tilmelding">×</button>
         <p class="modal-kicker">Emilie &amp; Marc · 10. juli 2027</p>
         <h2 id="registration-title">Tilmelding</h2>
+        <div class="modal-ornament" aria-hidden="true"><span></span>✦<span></span></div>
         <p class="registration-intro">Vi glæder os til at fejre dagen med jer.</p>
         <form class="registration-form" id="registration-form">
-          <div class="registration-field"><label for="first-name">Navn</label><input id="first-name" name="first-name" type="text" autocomplete="given-name" required /></div>
-          <div class="registration-field"><label for="last-name">Efternavn</label><input id="last-name" name="last-name" type="text" autocomplete="family-name" required /></div>
+          <div class="guest-name-grid">
+            <div class="registration-field"><label for="first-name">Navn</label><input id="first-name" name="first-name" type="text" autocomplete="given-name" required /></div>
+            <div class="registration-field"><label for="last-name">Efternavn</label><input id="last-name" name="last-name" type="text" autocomplete="family-name" required /></div>
+          </div>
           <fieldset class="attendance-field"><legend>Kan du deltage til brylluppet?</legend><label><input type="radio" name="attendance" value="ja" required /> Ja</label><label><input type="radio" name="attendance" value="nej" /> Nej</label></fieldset>
           <div class="attendance-details" id="attendance-details" hidden>
             <div class="registration-field"><label for="song">Hvilken sang får dig altid på dansegulvet?</label><input id="song" name="song" type="text" /></div>
