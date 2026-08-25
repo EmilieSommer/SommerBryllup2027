@@ -7,9 +7,17 @@ const nearestBranch = world.querySelector('img[data-depth="2"]');
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const backgroundMusic = document.querySelector("#background-music");
 const birdSound = document.querySelector("#bird-sound");
+const scrollPrompt = document.querySelector(".scroll-prompt");
 let musicStarted = false;
 let musicTarget = 0;
 let musicFadeFrame;
+let promptTimer;
+
+function showScrollPromptAfterPause() {
+  scrollPrompt.classList.remove("is-visible");
+  clearTimeout(promptTimer);
+  promptTimer = setTimeout(() => scrollPrompt.classList.add("is-visible"), 1200);
+}
 
 function fadeMusic() {
   const difference = musicTarget - backgroundMusic.volume;
@@ -73,6 +81,7 @@ function updateScene() {
 }
 let queued = false;
 function requestUpdate() { if (!queued) { queued = true; requestAnimationFrame(() => { updateScene(); queued = false; }); } }
-window.addEventListener("scroll", requestUpdate, { passive: true });
+window.addEventListener("scroll", () => { showScrollPromptAfterPause(); requestUpdate(); }, { passive: true });
 window.addEventListener("resize", requestUpdate);
 updateScene();
+showScrollPromptAfterPause();
