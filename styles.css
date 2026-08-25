@@ -1,0 +1,26 @@
+@font-face { font-family: "Melodrame"; src: url("assets/fonts/melodrame.ttf") format("truetype"); font-display: swap; }
+:root { --red: #e44046; --paper: #edc192; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 320px; background: #382d27; }
+.parallax { height: 350svh; }
+.scene { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--paper); isolation: isolate; }
+.world { --scale: 1; --camera: 0; position: absolute; top: 0; left: 50%; width: 1440px; height: 3538px; transform-origin: top center; transform: translateX(-50%) scale(var(--scale)) translateY(calc(var(--camera) * -1px)); }
+.layer { --float: 0px; position: absolute; top: calc(var(--y) * 1px); left: 0; display: block; width: 1440px; height: auto; max-width: none; transform: translate3d(0, var(--float), 0); will-change: transform; pointer-events: none; user-select: none; }
+.bird-flight { position: absolute; opacity: 0; pointer-events: none; --duration: 4.6s; --delay: 0s; --travel-x: -1750px; --travel-y: -340px; }
+.bird-flight-template { display: none; }
+.bird-flight--hero { top: 55px; left: 1030px; width: 520px; height: 375px; --duration: 5s; --travel-y: -105px; }
+.bird-flight--middle { top: 175px; left: 1190px; width: 385px; height: 278px; --delay: .45s; --duration: 4.5s; --travel-x: -1680px; --travel-y: -65px; }
+.bird-flight--far { top: 255px; left: 875px; width: 310px; height: 224px; --delay: 1.55s; --duration: 4.1s; --travel-x: -1810px; --travel-y: -150px; }
+.bird-flight.is-flying { animation: fly-across var(--duration) linear var(--delay) 1 both; }
+.bird-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; }
+.bird-frame--1 { animation: wing-one .72s steps(1, end) infinite; }.bird-frame--2 { animation: wing-two .72s steps(1, end) infinite; }.bird-frame--3 { animation: wing-three .72s steps(1, end) infinite; }
+@keyframes fly-across { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.76) scaleX(-1); } 8% { opacity: 1; } 84% { opacity: 1; } 100% { opacity: 0; transform: translate3d(var(--travel-x), var(--travel-y), 0) scale(.98) scaleX(-1); } }
+@keyframes wing-one { 0%, 33.2% { opacity: 1; } 33.3%, 100% { opacity: 0; } }
+@keyframes wing-two { 0%, 33.2% { opacity: 0; } 33.3%, 66.5% { opacity: 1; } 66.6%, 100% { opacity: 0; } }
+@keyframes wing-three { 0%, 66.5% { opacity: 0; } 66.6%, 100% { opacity: 1; } }
+.names, .save-date { position: absolute; z-index: 20; left: 0; width: 1440px; margin: 0; color: var(--red); text-align: center; font-family: "Melodrame", cursive; font-weight: 400; text-shadow: 0 2px rgb(255 224 174 / 30%); }
+.names { top: 475px; font-size: 182px; line-height: .8; letter-spacing: -.05em; }.names span { font-size: .78em; }.save-date { top: 700px; font-size: 133px; line-height: .8; }
+.date-sprite { --float: 0px; position: absolute; z-index: 20; top: 1840px; left: 457px; width: 526px; height: auto; transform: translate3d(0, var(--float), 0); will-change: transform; }
+.scroll-prompt { position: absolute; z-index: 30; bottom: 1.25rem; left: 0; right: 0; margin: 0; color: #f8e0bc; text-align: center; text-transform: uppercase; font: 600 .62rem/1 Arial, sans-serif; letter-spacing: .25em; opacity: .9; }
+@media (min-width: 700px) { .scene { max-width: 620px; margin: auto; box-shadow: 0 0 70px rgb(0 0 0 / .28); } }
+@media (prefers-reduced-motion: reduce) { .parallax { height: 100svh; } .world { transform: translateX(-50%) scale(var(--scale)); } .layer, .date-sprite { transform: none !important; } .bird-flight { display: none; } }
