@@ -24,6 +24,7 @@ let musicRequested = false;
 let musicTarget = 0;
 let musicFadeFrame;
 let promptTimer;
+let lastFlockTime = 0;
 
 function showScrollPromptAfterPause() {
   scrollPrompt.classList.remove("is-visible");
@@ -125,7 +126,7 @@ function updateScene() {
   setMusicLevel(musicRequested ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
-  if (progress >= 0.005 && !window.flockTriggered) {
+  if (progress >= 0.005 && !window.flockTriggered && Date.now() - lastFlockTime > 6500) {
     birdFlightTemplates.forEach((template) => {
       const flight = template.cloneNode(true);
       flight.classList.remove("bird-flight-template");
@@ -139,6 +140,7 @@ function updateScene() {
     birdCall.volume = 0.5;
     birdCall.play().catch(() => {});
     window.flockTriggered = true;
+    lastFlockTime = Date.now();
   }
   if (progress < 0.001) window.flockTriggered = false;
   // End the journey with the RSVP stamp centred in the viewport, rather than
@@ -149,7 +151,8 @@ function updateScene() {
   world.style.setProperty("--camera", progress * cameraDistance);
   movingLayers.forEach((item) => {
     const depth = Number(item.dataset.depth);
-    item.style.setProperty("--float", `${(12 - depth) * progress * 38}px`);
+    const floatDistance = scene.clientWidth <= 600 ? 12 : 38;
+    item.style.setProperty("--float", `${(12 - depth) * progress * floatDistance}px`);
   });
 }
 let queued = false;
