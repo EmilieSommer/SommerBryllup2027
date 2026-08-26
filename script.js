@@ -141,13 +141,9 @@ function updateScene() {
   // leaving its lower half below the fold on desktop screens.
   const stampCentre = registrationButton.offsetTop + registrationButton.offsetHeight / 2;
   const cameraForStamp = stampCentre - scene.clientHeight / (2 * scale);
-  const cameraDistance = Math.max(1300, cameraForStamp);
+  const cameraDistance = scene.clientWidth <= 600 ? 1300 : Math.max(1300, cameraForStamp);
   world.style.setProperty("--camera", progress * cameraDistance);
-  if (scene.clientWidth <= 600) {
-    // A single moving scene is much smoother on phones than compositing every
-    // large transparent layer independently on each scroll frame.
-    movingLayers.forEach((item) => item.style.removeProperty("--float"));
-  } else {
+  if (scene.clientWidth > 600) {
     movingLayers.forEach((item) => {
       const depth = Number(item.dataset.depth);
       item.style.setProperty("--float", `${(12 - depth) * progress * 38}px`);
