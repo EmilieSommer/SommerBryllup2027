@@ -135,7 +135,10 @@ function updateScene() {
     window.flockTriggered = true;
   }
   if (progress < 0.05) window.flockTriggered = false;
-  world.style.setProperty("--camera", progress * 1300);
+  // Wide screens need a longer camera journey to reach the lower illustration
+  // and RSVP stamp; phones retain the gentler original travel distance.
+  const cameraDistance = 1300 + Math.max(0, scale - 0.5) * 1400;
+  world.style.setProperty("--camera", progress * cameraDistance);
   movingLayers.forEach((item) => {
     const depth = Number(item.dataset.depth);
     item.style.setProperty("--float", `${(12 - depth) * progress * 38}px`);

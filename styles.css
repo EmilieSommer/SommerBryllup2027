@@ -2,7 +2,7 @@
 :root { --red: #e44046; --paper: #edc192; }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-width: 320px; background: #382d27; }
-.parallax { height: 350svh; }
+.parallax { height: 420svh; }
 .scene { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--paper); isolation: isolate; }
 .world { --scale: 1; --camera: 0; position: absolute; top: 0; left: 50%; width: 1440px; height: 3538px; transform-origin: top center; transform: translateX(-50%) scale(var(--scale)) translateY(calc(var(--camera) * -1px)); }
 .layer { --float: 0px; position: absolute; top: calc(var(--y) * 1px); left: 0; display: block; width: 1440px; height: auto; max-width: none; transform: translate3d(0, var(--float), 0); will-change: transform; pointer-events: none; user-select: none; }
