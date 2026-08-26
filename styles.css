@@ -94,4 +94,4 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 
 /* Keep the illustration flush with every browser edge, including wide screens. */
 @media (min-width: 700px) { .scene { width: 100vw; max-width: none; margin: 0; box-shadow: none; } }
-@media (max-width: 600px) { .registration-stamp { left: 575px; width: 350px; } }
+@media (max-width: 600px) { .registration-stamp { left: 700px; width: 350px; } }

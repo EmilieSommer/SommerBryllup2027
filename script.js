@@ -143,11 +143,16 @@ function updateScene() {
   const cameraForStamp = stampCentre - scene.clientHeight / (2 * scale);
   const cameraDistance = Math.max(1300, cameraForStamp);
   world.style.setProperty("--camera", progress * cameraDistance);
-  movingLayers.forEach((item) => {
-    const depth = Number(item.dataset.depth);
-    const floatDistance = scene.clientWidth <= 600 ? 12 : 38;
-    item.style.setProperty("--float", `${(12 - depth) * progress * floatDistance}px`);
-  });
+  if (scene.clientWidth <= 600) {
+    // A single moving scene is much smoother on phones than compositing every
+    // large transparent layer independently on each scroll frame.
+    movingLayers.forEach((item) => item.style.removeProperty("--float"));
+  } else {
+    movingLayers.forEach((item) => {
+      const depth = Number(item.dataset.depth);
+      item.style.setProperty("--float", `${(12 - depth) * progress * 38}px`);
+    });
+  }
 }
 let queued = false;
 function requestUpdate() { if (!queued) { queued = true; requestAnimationFrame(() => { updateScene(); queued = false; }); } }
