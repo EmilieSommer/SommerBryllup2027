@@ -135,9 +135,11 @@ function updateScene() {
     window.flockTriggered = true;
   }
   if (progress < 0.05) window.flockTriggered = false;
-  // Wide screens need a longer camera journey to reach the lower illustration
-  // and RSVP stamp; phones retain the gentler original travel distance.
-  const cameraDistance = 1300 + Math.max(0, scale - 0.5) * 1400;
+  // End the journey with the RSVP stamp centred in the viewport, rather than
+  // leaving its lower half below the fold on desktop screens.
+  const stampCentre = registrationButton.offsetTop + registrationButton.offsetHeight / 2;
+  const cameraForStamp = stampCentre - scene.clientHeight / (2 * scale);
+  const cameraDistance = Math.max(1300, cameraForStamp);
   world.style.setProperty("--camera", progress * cameraDistance);
   movingLayers.forEach((item) => {
     const depth = Number(item.dataset.depth);
