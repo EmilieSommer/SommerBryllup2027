@@ -111,7 +111,6 @@ function updateScene() {
   // and tall phone screens, while holding the date below the opening view.
   const scale = Math.max(scene.clientWidth / 1440, scene.clientHeight / 1700);
   world.style.setProperty("--scale", scale);
-  if (reduceMotion.matches) return;
   const scrollRange = section.offsetHeight - window.innerHeight;
   const progress = Math.max(0, Math.min(1, -section.getBoundingClientRect().top / scrollRange));
   // Dark type on the pale opening, gradually becoming cream over the dark landscape.
