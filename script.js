@@ -20,11 +20,9 @@ const flavourCount = document.querySelector("#flavour-count");
 const registrationConfirmation = document.querySelector("#registration-confirmation");
 const registrationSubmit = registrationForm.querySelector('[type="submit"]');
 let musicStarted = false;
-let musicRequested = false;
 let musicTarget = 0;
 let musicFadeFrame;
 let promptTimer;
-let lastFlockTime = 0;
 
 function showScrollPromptAfterPause() {
   scrollPrompt.classList.remove("is-visible");
@@ -52,18 +50,17 @@ function setMusicLevel(level) {
 }
 
 function startBackgroundMusic() {
-  if (musicRequested || reduceMotion.matches) return;
-  musicRequested = true;
+  if (musicStarted || reduceMotion.matches) return;
   backgroundMusic.volume = 0.22;
   musicTarget = 0.22;
-  backgroundMusic.play().then(() => { musicStarted = true; }).catch(() => { musicRequested = false; });
+  backgroundMusic.play().then(() => { musicStarted = true; }).catch(() => {});
 }
 
 // A tap/click unlocks audio on browsers that block sound during scroll gestures.
-window.addEventListener("pointerdown", startBackgroundMusic, { once: true });
-window.addEventListener("keydown", startBackgroundMusic, { once: true });
-window.addEventListener("touchstart", startBackgroundMusic, { once: true, passive: true });
-window.addEventListener("wheel", startBackgroundMusic, { once: true, passive: true });
+window.addEventListener("pointerdown", startBackgroundMusic);
+window.addEventListener("keydown", startBackgroundMusic);
+window.addEventListener("touchstart", startBackgroundMusic, { passive: true });
+window.addEventListener("wheel", startBackgroundMusic, { passive: true });
 registrationButton.addEventListener("click", () => registrationDialog.showModal());
 registrationClose.addEventListener("click", () => registrationDialog.close());
 function updateAttendanceDetails() {
@@ -122,11 +119,10 @@ function updateScene() {
   const endColor = [255, 240, 212];
   const promptColor = startColor.map((channel, index) => Math.round(channel + (endColor[index] - channel) * progress));
   scrollPrompt.style.setProperty("--prompt-color", `rgb(${promptColor.join(", ")})`);
-  if (progress > 0) startBackgroundMusic();
-  setMusicLevel(musicRequested ? 0.22 : 0);
+  setMusicLevel(musicStarted ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
-  if (progress >= 0.005 && !window.flockTriggered && Date.now() - lastFlockTime > 6500) {
+  if (progress >= 0.03 && !window.flockTriggered) {
     birdFlightTemplates.forEach((template) => {
       const flight = template.cloneNode(true);
       flight.classList.remove("bird-flight-template");
@@ -140,9 +136,7 @@ function updateScene() {
     birdCall.volume = 0.5;
     birdCall.play().catch(() => {});
     window.flockTriggered = true;
-    lastFlockTime = Date.now();
   }
-  if (progress < 0.001) window.flockTriggered = false;
   // End the journey with the RSVP stamp centred in the viewport, rather than
   // leaving its lower half below the fold on desktop screens.
   const stampCentre = registrationButton.offsetTop + registrationButton.offsetHeight / 2;
