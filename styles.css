@@ -5,7 +5,7 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 .parallax { height: 360svh; }
 .scene { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--paper); isolation: isolate; }
 .world { --scale: 1; --camera: 0; position: absolute; top: 0; left: 50%; width: 1440px; height: 3538px; transform-origin: top center; transform: translateX(-50%) scale(var(--scale)) translateY(calc(var(--camera) * -1px)); }
-.mobile-scene { display: none; pointer-events: none; user-select: none; }
+.mobile-layer { display: none; pointer-events: none; user-select: none; }
 .layer { --float: 0px; position: absolute; top: calc(var(--y) * 1px); left: 0; display: block; width: 1440px; height: auto; max-width: none; transform: translate3d(0, var(--float), 0); will-change: transform; pointer-events: none; user-select: none; }
 .bird-flight { position: absolute; opacity: 0; pointer-events: none; --duration: 4.6s; --delay: 0s; --travel-x: -1750px; --travel-y: -340px; }
 .bird-flight-template { display: none; }
@@ -96,4 +96,4 @@ html, body { margin: 0; min-width: 320px; background: #382d27; }
 /* Keep the illustration flush with every browser edge, including wide screens. */
 @media (min-width: 700px) { .scene { width: 100vw; max-width: none; margin: 0; box-shadow: none; } }
 @media (max-width: 600px) { .registration-stamp { left: 700px; width: 350px; } }
-@media (max-width: 600px) { .world > picture, .bird-flight { display: none !important; } .mobile-scene { position: absolute; top: 0; left: 0; display: block; width: 1440px; height: auto; } .names, .save-date, .date-sprite { z-index: 20; } }
+@media (max-width: 600px) { .world > picture, .bird-flight { display: none !important; } .mobile-layer { --float: 0px; position: absolute; top: 0; left: 0; display: block; width: 1440px; height: auto; transform: translate3d(0, var(--float), 0); will-change: transform; } .names, .save-date, .date-sprite { z-index: 20; } }

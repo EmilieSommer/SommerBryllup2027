@@ -2,6 +2,7 @@ const section = document.querySelector(".parallax");
 const scene = document.querySelector(".scene");
 const world = document.querySelector(".world");
 const movingLayers = [...document.querySelectorAll("[data-depth]")];
+const mobileLayers = [...document.querySelectorAll("[data-mobile-shift]")];
 const birdFlightTemplates = [...document.querySelectorAll("[data-flight-template]")];
 // Spawn the birds behind layer 3 and all nearer foreground layers.
 const foregroundAnchor = world.querySelector('img[data-depth="3"]');
@@ -142,7 +143,9 @@ function updateScene() {
   const cameraForStamp = stampCentre - scene.clientHeight / (2 * scale);
   const cameraDistance = scene.clientWidth <= 600 ? 1300 : Math.max(1300, cameraForStamp);
   world.style.setProperty("--camera", progress * cameraDistance);
-  if (scene.clientWidth > 600) {
+  if (scene.clientWidth <= 600) {
+    mobileLayers.forEach((item) => item.style.setProperty("--float", `${Number(item.dataset.mobileShift) * progress}px`));
+  } else {
     movingLayers.forEach((item) => {
       const depth = Number(item.dataset.depth);
       item.style.setProperty("--float", `${(12 - depth) * progress * 38}px`);
