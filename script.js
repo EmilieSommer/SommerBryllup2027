@@ -122,13 +122,16 @@ function updateScene() {
   setMusicLevel(musicStarted ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
-  if (scene.clientWidth > 600 && progress >= 0.03 && !window.flockTriggered) {
+  if (progress >= 0.03 && !window.flockTriggered) {
     birdFlightTemplates.forEach((template) => {
       const flight = template.cloneNode(true);
       flight.classList.remove("bird-flight-template");
       flight.removeAttribute("data-flight-template");
       flight.classList.add("is-flying");
-      world.insertBefore(flight, foregroundAnchor);
+      // On phones the illustration is already flattened into three light layers,
+      // so append the birds rather than inserting them among hidden desktop layers.
+      if (scene.clientWidth <= 600 || !foregroundAnchor) world.append(flight);
+      else world.insertBefore(flight, foregroundAnchor);
       flight.addEventListener("animationend", () => flight.remove(), { once: true });
     });
     // Each flock has one bird call; cloned audio lets earlier calls finish naturally.
