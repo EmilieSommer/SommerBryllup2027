@@ -122,7 +122,7 @@ function updateScene() {
   setMusicLevel(musicStarted ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
-  if (progress >= 0.03 && !window.flockTriggered) {
+  if (progress >= 0.008 && !window.flockTriggered) {
     birdFlightTemplates.forEach((template) => {
       const flight = template.cloneNode(true);
       flight.classList.remove("bird-flight-template");
