@@ -5,7 +5,7 @@ const movingLayers = [...document.querySelectorAll("[data-depth]")];
 const mobileLayers = [...document.querySelectorAll("[data-mobile-shift]")];
 const birdFlightTemplates = [...document.querySelectorAll("[data-flight-template]")];
 // Spawn the birds behind layer 3 and all nearer foreground layers.
-const foregroundAnchor = world.querySelector('img[data-depth="3"]');
+const foregroundAnchor = world.querySelector('img[data-depth="3"]')?.closest("picture");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const backgroundMusic = document.querySelector("#background-music");
 const birdSound = document.querySelector("#bird-sound");
@@ -122,7 +122,7 @@ function updateScene() {
   setMusicLevel(musicStarted ? 0.22 : 0);
   // Cross this small scroll threshold to launch the flock once. Returning above
   // it arms the animation again for the next downward pass.
-  if (progress >= 0.03 && !window.flockTriggered) {
+  if (scene.clientWidth > 600 && progress >= 0.03 && !window.flockTriggered) {
     birdFlightTemplates.forEach((template) => {
       const flight = template.cloneNode(true);
       flight.classList.remove("bird-flight-template");
