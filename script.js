@@ -16,8 +16,6 @@ const registrationClose = document.querySelector("#registration-close");
 const registrationForm = document.querySelector("#registration-form");
 const attendanceDetails = document.querySelector("#attendance-details");
 const attendanceRadios = [...document.querySelectorAll('input[name="Deltagelse"]')];
-const flavourCheckboxes = [...document.querySelectorAll('input[name="Is-smage"]')];
-const flavourCount = document.querySelector("#flavour-count");
 const registrationConfirmation = document.querySelector("#registration-confirmation");
 const registrationSubmit = registrationForm.querySelector('[type="submit"]');
 let musicStarted = false;
@@ -103,13 +101,6 @@ function updateAttendanceDetails() {
 }
 attendanceRadios.forEach((radio) => radio.addEventListener("change", updateAttendanceDetails));
 updateAttendanceDetails();
-flavourCheckboxes.forEach((checkbox) => checkbox.addEventListener("change", () => {
-  const selected = flavourCheckboxes.filter((flavour) => flavour.checked);
-  if (selected.length > 4) checkbox.checked = false;
-  const selectedCount = flavourCheckboxes.filter((flavour) => flavour.checked).length;
-  flavourCount.textContent = `(${selectedCount}/4)`;
-  flavourCheckboxes.forEach((flavour) => { flavour.disabled = !flavour.checked && selectedCount >= 4; });
-}));
 registrationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const attending = document.querySelector('input[name="Deltagelse"]:checked')?.value === "Ja";
