@@ -125,7 +125,9 @@ registrationForm.addEventListener("submit", async (event) => {
       headers: { Accept: "application/json" },
     });
     if (!response.ok) throw new Error("Formspree submission failed");
-    registrationForm.hidden = true;
+    registrationForm.querySelectorAll("input, textarea, button").forEach((field) => { field.disabled = true; });
+    registrationSubmit.classList.add("is-sent");
+    registrationSubmit.textContent = "Sendt!";
     registrationConfirmation.hidden = false;
     registrationConfirmation.textContent = attending
       ? "Tak for dit svar — vi glæder os til at fejre med dig."
@@ -134,7 +136,7 @@ registrationForm.addEventListener("submit", async (event) => {
     registrationConfirmation.hidden = false;
     registrationConfirmation.textContent = "Åh nej — svaret kunne ikke sendes. Prøv gerne igen om lidt.";
     registrationSubmit.disabled = false;
-    registrationSubmit.textContent = "Send tilmelding";
+    registrationSubmit.textContent = "Svar her";
   }
 });
 
