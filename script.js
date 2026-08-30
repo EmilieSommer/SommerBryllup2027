@@ -24,6 +24,7 @@ let musicStarted = false;
 let musicTarget = 0;
 let musicFadeFrame;
 let promptTimer;
+let birdTimer;
 
 function showScrollPromptAfterPause() {
   scrollPrompt.classList.remove("is-visible");
@@ -57,11 +58,41 @@ function startBackgroundMusic() {
   backgroundMusic.play().then(() => { musicStarted = true; }).catch(() => {});
 }
 
+function flyBirds() {
+  if (reduceMotion.matches) return;
+  birdFlightTemplates.forEach((template) => {
+    const flight = template.cloneNode(true);
+    const baseTop = Number.parseFloat(getComputedStyle(template).top);
+    const baseLeft = Number.parseFloat(getComputedStyle(template).left);
+    flight.classList.remove("bird-flight-template");
+    flight.removeAttribute("data-flight-template");
+    flight.classList.add("is-flying");
+    flight.style.top = `${baseTop + (Math.random() - 0.5) * 180}px`;
+    flight.style.left = `${baseLeft + (Math.random() - 0.5) * 140}px`;
+    flight.style.setProperty("--travel-y", `${-50 - Math.random() * 250}px`);
+    if (scene.clientWidth <= 600 || !foregroundAnchor) world.append(flight);
+    else world.insertBefore(flight, foregroundAnchor);
+    flight.addEventListener("animationend", () => flight.remove(), { once: true });
+  });
+  const birdCall = birdSound.cloneNode(true);
+  birdCall.volume = 0.5;
+  birdCall.play().catch(() => {});
+}
+
+function scheduleBirds() {
+  flyBirds();
+  birdTimer = window.setTimeout(scheduleBirds, 10000 + Math.random() * 10000);
+}
+
 // A tap/click unlocks audio on browsers that block sound during scroll gestures.
 window.addEventListener("pointerdown", startBackgroundMusic);
 window.addEventListener("keydown", startBackgroundMusic);
 window.addEventListener("touchstart", startBackgroundMusic, { passive: true });
 window.addEventListener("wheel", startBackgroundMusic, { passive: true });
+// Browsers that permit autoplay begin music immediately; a tap remains the
+// fallback for phones that require an interaction before audio can play.
+startBackgroundMusic();
+window.setTimeout(scheduleBirds, 500);
 registrationButton.addEventListener("click", () => registrationDialog.showModal());
 registrationClose.addEventListener("click", () => registrationDialog.close());
 function updateAttendanceDetails() {
@@ -120,26 +151,6 @@ function updateScene() {
   const promptColor = startColor.map((channel, index) => Math.round(channel + (endColor[index] - channel) * progress));
   scrollPrompt.style.setProperty("--prompt-color", `rgb(${promptColor.join(", ")})`);
   setMusicLevel(musicStarted ? 0.22 : 0);
-  // Cross this small scroll threshold to launch the flock once. Returning above
-  // it arms the animation again for the next downward pass.
-  if (progress >= 0.008 && !window.flockTriggered) {
-    birdFlightTemplates.forEach((template) => {
-      const flight = template.cloneNode(true);
-      flight.classList.remove("bird-flight-template");
-      flight.removeAttribute("data-flight-template");
-      flight.classList.add("is-flying");
-      // On phones the illustration is already flattened into three light layers,
-      // so append the birds rather than inserting them among hidden desktop layers.
-      if (scene.clientWidth <= 600 || !foregroundAnchor) world.append(flight);
-      else world.insertBefore(flight, foregroundAnchor);
-      flight.addEventListener("animationend", () => flight.remove(), { once: true });
-    });
-    // Each flock has one bird call; cloned audio lets earlier calls finish naturally.
-    const birdCall = birdSound.cloneNode(true);
-    birdCall.volume = 0.5;
-    birdCall.play().catch(() => {});
-    window.flockTriggered = true;
-  }
   // End the journey with the RSVP stamp centred in the viewport, rather than
   // leaving its lower half below the fold on desktop screens.
   const stampCentre = registrationButton.offsetTop + registrationButton.offsetHeight / 2;
