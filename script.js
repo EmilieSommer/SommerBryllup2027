@@ -116,7 +116,7 @@ registrationForm.addEventListener("submit", async (event) => {
   registrationSubmit.disabled = true;
   registrationSubmit.textContent = "Sender…";
   registrationConfirmation.hidden = false;
-  registrationConfirmation.textContent = "Sender din tilmelding — vent venligst et øjeblik.";
+  registrationConfirmation.textContent = "Sender dit svar — vent venligst et øjeblik.";
 
   try {
     const response = await fetch(registrationForm.action, {
